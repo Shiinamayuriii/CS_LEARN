@@ -22,7 +22,46 @@ public class TimeSLList {
     }
 
     public static void timeGetLast() {
-        // TODO: YOUR CODE HERE
+        AList<Integer> Ns = new AList<>();
+        AList<Double> times = new AList<>();
+        AList<Integer> opCounts = new AList<>();
+
+        int M = 10000;
+        int TestSize = 500;
+        for(int i = 0; i <8; i ++){
+            TestSize *= 2;
+            SLList<Integer> L = new SLList<>();
+            for (int j = 0; j < TestSize; j++){
+                L.addLast(j);
+            }
+            Stopwatch sw = new Stopwatch();
+            for(int x = 0; x < M; x++){
+                L.getLast();
+            }
+            double timeInSeconds = sw.elapsedTime();
+            Ns.addLast(TestSize);
+            times.addLast(timeInSeconds);
+            opCounts.addLast(M);
+        }
+        printTimingTable(Ns, times, opCounts);
     }
 
 }
+
+//    public static void timeAListConstruction() {
+//        AList<Integer> Ns = new AList<>();
+//        AList<Double> times = new AList<>();
+//        AList<Integer> opCounts = new AList<>();
+//        for (int i = 1000; i <= 128000; i *= 2) {
+//            AList<Integer> L = new AList<>();
+//            Stopwatch sw = new Stopwatch();
+//            for (int j = 0; j < i; j++) {
+//                L.addLast(j);
+//            }
+//            double timeInSeconds = sw.elapsedTime();
+//            Ns.addLast(i);
+//            times.addLast(timeInSeconds);
+//            opCounts.addLast(i);
+//        }
+//        printTimingTable(Ns, times, opCounts);
+//    }
