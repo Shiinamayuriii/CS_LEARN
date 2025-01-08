@@ -33,7 +33,7 @@ public class ArrayDeque<T> implements Iterable<T> {
     }
 
 
-    public void resize_check(){
+    private void resize_check(){
         if(size == items.length){
             capacity *= 2;
             T[] items_new = (T[]) new Object[capacity];
@@ -64,6 +64,9 @@ public class ArrayDeque<T> implements Iterable<T> {
     }
 
     public T removeFirst(){
+        if (isEmpty()) {
+            return null;
+        }
         T returned = items[(head+1) % items.length];
         items[(head+1) % items.length] = null;
         head = (head + 1) % items.length;
@@ -71,6 +74,9 @@ public class ArrayDeque<T> implements Iterable<T> {
         return returned;
     }
     public T removeLast(){
+        if (isEmpty()) {
+            return null;
+        }
         T returned = items[(tail-1) % items.length];
         items[(tail-1) % items.length] = null;
         tail = (tail-1) % items.length;
@@ -91,7 +97,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         return new ArrayDequeIterator();
     }
 
-    public class ArrayDequeIterator implements Iterator<T>{
+    private class ArrayDequeIterator implements Iterator<T>{
         private int Pos;
         public ArrayDequeIterator(){
             Pos = 0;
@@ -125,5 +131,5 @@ public class ArrayDeque<T> implements Iterable<T> {
         }
         return true;
     }
-    
+
 }
