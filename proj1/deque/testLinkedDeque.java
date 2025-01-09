@@ -67,5 +67,7 @@ public class testLinkedDeque {
         lis2.addFirst(5);
 
         System.out.println(lis1.getRecursive(0));
+
+        System.out.println(lis1 instanceof Deque);
     }
 }

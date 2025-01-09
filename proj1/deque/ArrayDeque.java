@@ -1,6 +1,5 @@
 package deque;
 
-import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
@@ -17,106 +16,91 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         tail = 1;
     }
 
-    public ArrayDeque(int Def_capacity) {
-        items = (T[]) new Object[Def_capacity];
-        size = 0;
-        head = 0;
-        tail = 1;
+    public void resize_for_guitar(int i){
+        capacity = i;
+        items = (T[]) new Object[capacity];
     }
 
     @Override
-    public void addFirst(T item){
-        resize_check();
-        items[head] = item;
+    public void addFirst(T item) {
+        resizeCheck();
         head = (head - 1 + items.length) % items.length;
+        items[head] = item;
         size++;
     }
     @Override
-    public void addLast(T item){
-        resize_check();
+    public void addLast(T item) {
+        resizeCheck();
         items[tail] = item;
-        tail = (tail + 1 + items.length) % items.length;
+        tail = (tail + 1) % items.length;
         size++;
     }
 
-
-    private void resize_check(){
-        if(size == items.length){
-            capacity *= 2;
-            T[] items_new = (T[]) new Object[capacity];
-            for(int i =1;i<=items.length;i++){
-                items_new[i] = items[(head + i) % items.length];
-            }
-            items = items_new;
-            head = 0;
-            tail = size+1;
+    private void resizeCheck() {
+        if (size == items.length) {
+            resize(items.length * 2);
         }
     }
 
-    private void remove_resize(){
-        if(items.length >16 && size <=items.length/4){
-            capacity /= 2;
-            T[] items_new = (T[]) new Object[capacity];
-            for(int i =1;i<=size;i++){
-                items_new[i] = items[(head + i) % items.length];
-            }
-            items = items_new;
-            head = 0;
-            tail = size+1;
-
+    private void downsizeCheck() {
+        if (items.length > 16 && size < items.length / 4) {
+            resize(items.length / 2);
         }
     }
 
-    @Override
-    public int size(){ return size; }
+    private void resize(int newCapacity) {
+        T[] newItems = (T[]) new Object[newCapacity];
+        for (int i = 0; i < size; i++) {
+            newItems[i] = items[(head + i) % items.length];
+        }
+        items = newItems;
+        head = 0;
+        tail = size;
+    }
 
     @Override
-    public void printDeque(){
-        if (isEmpty()) {
-            System.out.println("List is empty");
-            return;
-        }
-        for(int i = 1;i<=size;i++){
+    public int size() { return size; }
+
+    @Override
+    public void printDeque() {
+        for(int i = 0;i<size;i++){
             System.out.print(items[(head + i) % items.length] + " ");
         }
         System.out.println();
     }
 
     @Override
-    public T removeFirst(){
+    public T removeFirst() {
         if (isEmpty()) {
             return null;
         }
-        remove_resize();
-        T returned = items[(head+1) % items.length];
-        items[(head+1) % items.length] = null;
+        T removed = items[head];
+        items[head] = null;
         head = (head + 1) % items.length;
         size--;
-        return returned;
+        downsizeCheck();
+        return removed;
     }
 
     @Override
-    public T removeLast(){
+    public T removeLast() {
         if (isEmpty()) {
             return null;
         }
-        remove_resize();
-        T returned = items[(tail-1) % items.length];
-        items[(tail-1) % items.length] = null;
-        tail = (tail-1) % items.length;
+        tail = (tail - 1 + items.length) % items.length;
+        T removed = items[tail];
+        items[tail] = null;
         size--;
-        return returned;
+        downsizeCheck();
+        return removed;
     }
 
     @Override
-    public T get(int index){
-        if(isEmpty()){
-            return null;
-        }
+    public T get(int index) {
         if (index < 0 || index >= size) {
             return null;
         }
-        return items[(head + index +1) % items.length];
+        return items[(head + index) % items.length];
     }
 
     @Override
@@ -124,8 +108,9 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         return new ArrayDequeIterator();
     }
 
-    private class ArrayDequeIterator implements Iterator<T>{
+    private class ArrayDequeIterator implements Iterator<T> {
         private int Pos;
+
         public ArrayDequeIterator(){
             Pos = 0;
         }
@@ -145,10 +130,10 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     @Override
-    public boolean equals(Object o){
+    public boolean equals(Object o) {
         if(o == null){ return false; }
         if(o == this){ return true; }
-        if(!(o instanceof ArrayDeque)){ return false; }
+        if(!(o instanceof Deque)){ return false; }
         ArrayDeque<T> other = (ArrayDeque<T>) o;
         if(this.size != other.size){ return false; }
         int index = 0;
