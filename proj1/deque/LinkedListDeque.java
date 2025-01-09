@@ -2,7 +2,7 @@ package deque;
 
 import java.util.Iterator;
 
-public class LinkedListDeque<T> implements Iterable<T> {
+public class LinkedListDeque<T> implements Iterable<T>,Deque<T> {
 
     // Node class
     private class Node {
@@ -29,7 +29,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         size = 0;
     }
 
-    // Add an element to the front of the list
+    @Override
     public void addFirst(T item) {
         Node newNode = new Node(item);
         newNode.prev = sentinel;
@@ -44,7 +44,8 @@ public class LinkedListDeque<T> implements Iterable<T> {
         size++;
     }
 
-    // Add an element to the end of the list
+
+    @Override
     public void addLast(T item) {
         Node newNode = new Node(item);
         newNode.prev = sentinel.prev;
@@ -59,7 +60,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         size++;
     }
 
-    // Remove the first element
+    @Override
     public T removeFirst() {
         if (isEmpty()) {
             return null;
@@ -71,7 +72,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         return firstNode.data;
     }
 
-    // Remove the last element
+    @Override
     public T removeLast() {
         if (isEmpty()) {
             return null;
@@ -87,17 +88,12 @@ public class LinkedListDeque<T> implements Iterable<T> {
         return lastNode.data;
     }
 
-    // Get the size of the list
+    @Override
     public int size() {
         return size;
     }
 
-    // Check if the list is empty
-    public boolean isEmpty() {
-        return size == 0;
-    }
-
-    // Print the list elements
+    @Override
     public void printDeque() {
         if (isEmpty()) {
             System.out.println("List is empty");
@@ -112,6 +108,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         System.out.println();
     }
 
+    @Override
     public T get(int index){
         if(isEmpty()){
             return null;
@@ -145,6 +142,7 @@ public class LinkedListDeque<T> implements Iterable<T> {
         return getRecursiveHelper(N.next, index-1);
     }
 
+    @Override
     public Iterator<T> iterator(){
         return new LinkedListIterator();
     }

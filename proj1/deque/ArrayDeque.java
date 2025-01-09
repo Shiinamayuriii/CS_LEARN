@@ -1,10 +1,9 @@
 package deque;
 
 import java.util.ArrayList;
-import java.util.Deque;
 import java.util.Iterator;
 
-public class ArrayDeque<T> implements Iterable<T> {
+public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     private T[] items;
     private int size;
     private int head;
@@ -18,13 +17,21 @@ public class ArrayDeque<T> implements Iterable<T> {
         tail = 1;
     }
 
+    public ArrayDeque(int Def_capacity) {
+        items = (T[]) new Object[Def_capacity];
+        size = 0;
+        head = 0;
+        tail = 1;
+    }
+
+    @Override
     public void addFirst(T item){
         resize_check();
         items[head] = item;
         head = (head - 1 + items.length) % items.length;
         size++;
     }
-
+    @Override
     public void addLast(T item){
         resize_check();
         items[tail] = item;
@@ -46,12 +53,24 @@ public class ArrayDeque<T> implements Iterable<T> {
         }
     }
 
-    public boolean isEmpty(){
-        return size == 0;
+    private void remove_resize(){
+        if(items.length >16 && size <=items.length/4){
+            capacity /= 2;
+            T[] items_new = (T[]) new Object[capacity];
+            for(int i =1;i<=size;i++){
+                items_new[i] = items[(head + i) % items.length];
+            }
+            items = items_new;
+            head = 0;
+            tail = size+1;
+
+        }
     }
 
+    @Override
     public int size(){ return size; }
 
+    @Override
     public void printDeque(){
         if (isEmpty()) {
             System.out.println("List is empty");
@@ -63,26 +82,33 @@ public class ArrayDeque<T> implements Iterable<T> {
         System.out.println();
     }
 
+    @Override
     public T removeFirst(){
         if (isEmpty()) {
             return null;
         }
+        remove_resize();
         T returned = items[(head+1) % items.length];
         items[(head+1) % items.length] = null;
         head = (head + 1) % items.length;
         size--;
         return returned;
     }
+
+    @Override
     public T removeLast(){
         if (isEmpty()) {
             return null;
         }
+        remove_resize();
         T returned = items[(tail-1) % items.length];
         items[(tail-1) % items.length] = null;
         tail = (tail-1) % items.length;
         size--;
         return returned;
     }
+
+    @Override
     public T get(int index){
         if(isEmpty()){
             return null;
@@ -93,6 +119,7 @@ public class ArrayDeque<T> implements Iterable<T> {
         return items[(head + index +1) % items.length];
     }
 
+    @Override
     public Iterator<T> iterator(){
         return new ArrayDequeIterator();
     }

@@ -26,5 +26,14 @@ public class testArrayDeque {
             System.out.print(i + " ");
         }
         System.out.println();
+
+
+        ArrayDeque<Integer> a1 = new ArrayDeque<>();
+        for(int i = 0;i<=100;i++){
+            a1.addFirst(i);
+        }
+        for(int i = 0;i<=90;i++){
+            a1.removeFirst();
+        }
     }
 }
