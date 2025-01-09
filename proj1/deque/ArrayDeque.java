@@ -93,18 +93,15 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
             return null;
         }
         remove_resize();
-        T returned = items[(tail-1) % items.length];
-        items[(tail-1) % items.length] = null;
-        tail = (tail-1) % items.length;
+        T returned = items[(tail-1 + items.length) % items.length];
+        items[(tail-1 + items.length) % items.length] = null;
+        tail = (tail-1 + items.length) % items.length;
         size--;
         return returned;
     }
 
     @Override
     public T get(int index) {
-        if(isEmpty()){
-            return null;
-        }
         if (index < 0 || index >= size) {
             return null;
         }
