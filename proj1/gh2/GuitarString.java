@@ -21,7 +21,6 @@ public class GuitarString {
     public GuitarString(double frequency) {
         int capacity = (int) Math.round(SR /frequency);
         buffer = new ArrayDeque<>();
-        buffer.resize_for_guitar(capacity);
         for(int i = 0; i < capacity; i++) {
             buffer.addFirst(0.0);
         }
