@@ -17,14 +17,14 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     @Override
-    public void addFirst(T item){
+    public void addFirst(T item) {
         resize_check();
         items[head] = item;
         head = (head - 1 + items.length) % items.length;
         size++;
     }
     @Override
-    public void addLast(T item){
+    public void addLast(T item) {
         resize_check();
         items[tail] = item;
         tail = (tail + 1 + items.length) % items.length;
@@ -32,11 +32,11 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
 
-    private void resize_check(){
-        if(size == items.length){
+    private void resize_check() {
+        if (size == items.length){
             capacity *= 2;
             T[] items_new = (T[]) new Object[capacity];
-            for(int i =1;i<=items.length;i++){
+            for (int i =1;i<=items.length;i++){
                 items_new[i] = items[(head + i) % items.length];
             }
             items = items_new;
@@ -45,8 +45,8 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
         }
     }
 
-    private void remove_resize(){
-        if(items.length >16 && size <=items.length/4){
+    private void remove_resize() {
+        if(items.length >16 && size <=items.length/4) {
             capacity /= 2;
             T[] items_new = (T[]) new Object[capacity];
             for(int i =1;i<=size;i++){
@@ -63,19 +63,19 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     public int size(){ return size; }
 
     @Override
-    public void printDeque(){
+    public void printDeque() {
         if (isEmpty()) {
             System.out.println("List is empty");
             return;
         }
-        for(int i = 1;i<=size;i++){
+        for(int i = 1;i<=size;i++) {
             System.out.print(items[(head + i) % items.length] + " ");
         }
         System.out.println();
     }
 
     @Override
-    public T removeFirst(){
+    public T removeFirst() {
         if (isEmpty()) {
             return null;
         }
@@ -88,7 +88,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     @Override
-    public T removeLast(){
+    public T removeLast() {
         if (isEmpty()) {
             return null;
         }
@@ -101,7 +101,7 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     @Override
-    public T get(int index){
+    public T get(int index) {
         if(isEmpty()){
             return null;
         }
@@ -112,13 +112,13 @@ public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
     }
 
     @Override
-    public Iterator<T> iterator(){
+    public Iterator<T> iterator() {
         return new ArrayDequeIterator();
     }
 
     private class ArrayDequeIterator implements Iterator<T>{
         private int Pos;
-        public ArrayDequeIterator(){
+        public ArrayDequeIterator() {
             Pos = 0;
         }
 
